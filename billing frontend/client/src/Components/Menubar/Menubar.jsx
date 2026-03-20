@@ -48,7 +48,7 @@ const MenuBar = () => {
                     <img src={assets.profile} alt="" height={32} width={32}/>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li>
+                    {/* <li> */}
                         <a href="#" className="dropdown-item">
                             settings
                         </a>
@@ -61,7 +61,7 @@ const MenuBar = () => {
                         <a href="#" className="dropdown-item" onClick={logout}>
                             Logout
                         </a>
-                    </li>
+                    {/* </li> */}
                 </ul>
             </li>
         </ul>
