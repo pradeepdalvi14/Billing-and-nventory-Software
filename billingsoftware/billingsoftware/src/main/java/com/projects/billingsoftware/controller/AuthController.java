@@ -62,4 +62,5 @@ public class AuthController {
         return passwordEncoder.encode(request.get("password"));
 
     }
+//    test changes
 }
