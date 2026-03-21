@@ -4,15 +4,15 @@ import './DisplayItems.css';
 import Item from '../Item/Item';
 import SearchBox from '../SearchBox/SearchBox';
 
-const DisplayItems = () => {
+const DisplayItems = ({selectedCategory}) => {
 
     const {itemsData} = useContext(AppContext);
     const [searchText, setSearchText] = useState("");
 
     const filteredItems = itemsData.filter(item =>{
-            return item.name.toLowerCase().includes(searchText.toLowerCase())
-        }
-    );
+        if(!selectedCategory) return true;
+        return item.categoryId === selectedCategory;
+    }).filter(item =>item.name.toLowerCase().includes(searchText.toLowerCase()));
 
     return (
 
