@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../Context/AppContext';
 const CartItems = () => {
 
-    const { cartItems, removeFromCart, updateQuantity} = useContext(AppContext);
+    const { cartItems, removeFromCart, updateCartItemQuantity} = useContext(AppContext);
 
 
     return (
@@ -25,17 +25,17 @@ const CartItems = () => {
                             <div className='d-flex justify-content-between align-items-center'>
                                 <div className='d-flex align-items center gap-2'>
                                     <button className='btn btn-danger btn-sm'
-                                        onClick={() => updateQuantity(item.itemId, item.quantity -1)}
+                                        onClick={() => updateCartItemQuantity(item.itemId, item.quantity -1)}
                                         disabled={item.quantity == 1}>
                                         <i className="bi bi-dash"></i>
                                     </button>
                                     <span className='text-light'>{item.quantity}</span>
-                                    <button className='btn btn-primary btn-sm' onClick={() => updateQuantity(item.itemId,item.quantity+1)}>
+                                    <button className='btn btn-primary btn-sm' onClick={() => updateCartItemQuantity(item.itemId,item.quantity+1)}>
                                         
                                         <i className="bi bi-plus"></i>
                                     </button>
                                 </div>
-                                <button className='btn btn-danger btn-sm' style={{width:"auto"}}>
+                                <button className='btn btn-danger btn-sm' onClick={() => removeFromCart(item.itemId)} style={{width:"auto"}}>
                                     <i className='bi bi-trash'></i>
                                 </button>
 
