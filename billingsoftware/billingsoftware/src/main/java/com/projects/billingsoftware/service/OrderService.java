@@ -2,6 +2,7 @@ package com.projects.billingsoftware.service;
 
 import com.projects.billingsoftware.io.OrderRequest;
 import com.projects.billingsoftware.io.OrderResponse;
+import com.projects.billingsoftware.io.PaymentVerificationRequest;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface OrderService {
     void deleteOrder(String orderId);
 
     List<OrderResponse> getLatestOrders();
+
+    OrderResponse verifyPayment(PaymentVerificationRequest request);
 }

@@ -2,16 +2,14 @@ package com.projects.billingsoftware.service.impl;
 
 import com.projects.billingsoftware.entity.OrderEntity;
 import com.projects.billingsoftware.entity.OrderItemEntity;
-import com.projects.billingsoftware.io.OrderRequest;
-import com.projects.billingsoftware.io.OrderResponse;
-import com.projects.billingsoftware.io.PaymentDetails;
-import com.projects.billingsoftware.io.PaymentMethod;
+import com.projects.billingsoftware.io.*;
 import com.projects.billingsoftware.repository.OrderEntityRepository;
 import com.projects.billingsoftware.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -109,5 +107,29 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponse verifyPayment(PaymentVerificationRequest request) {
+        OrderEntity existingOrder = orderEntityRepository.findByOrderId(request.getOrderId())
+                .orElseThrow(()-> new RuntimeException("Order not found"));
+
+        if(!verifyRazorpaySignature(request.getRazorpayOrderId(),
+                request.getRazorpayPaymentId(),
+                request.getRazorpaySignature())){
+            throw new RuntimeException("Payment verification failed");
+        }
+        PaymentDetails paymentDetails = existingOrder.getPaymentDetails();
+        paymentDetails.setRazorpayOrderId(request.getRazorpayOrderId());
+        paymentDetails.setRazorpayPaymentId(request.getRazorpayPaymentId());
+        paymentDetails.setRazorpaySignature(request.getRazorpaySignature());
+        paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
+
+        existingOrder = orderEntityRepository.save(existingOrder);
+        return convertToResponse(existingOrder);
+    }
+
+    private boolean verifyRazorpaySignature(String razorpayOrderId, String razorpayPaymentId, String razorpaySignature) {
+        return true;
     }
 }
